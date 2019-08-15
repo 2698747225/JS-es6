@@ -1,0 +1,44 @@
+<script>
+    function judgeType(param) {
+        return Object.prototype.toString.apply(param).slice(8, -1);
+    }
+
+    function copyDeep(param) {
+        const type = judgeType(param);
+        let target;
+        switch (type) {
+            case 'Function':
+                target = [];
+                break;
+            case 'Object':
+                target = {};
+                break;
+            default:
+                return param;
+        }
+        for (const key in param) {
+            if (type === 'Function' || type === 'Object') {
+                target[key] = copyDeep(param[key]);
+            } else {
+                target[key] = param[key];
+            }
+        }
+        return target;
+    }
+
+    var demo = {
+        a: 1,
+        b: '11',
+        c: true,
+        d: [1, 2, 3],
+        f: {
+            title: 1,
+            name: 'aa'
+        }
+    }
+    var copyDemo = copyDeep(demo);
+    console.log(copyDemo);
+    demo.f.title = 2;
+    console.log(demo);
+    console.log(copyDemo); //判断深拷贝是否成功
+</script>

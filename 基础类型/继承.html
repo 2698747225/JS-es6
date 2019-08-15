@@ -1,0 +1,141 @@
+<script>
+    console.log('原型式继承测试------------------------------------');
+    /**
+        原型式继承，通过Object.create方法
+        @param obj 实例对象或原型对象
+    */
+    function create(obj) {
+        const fn = function () {};
+        fn.prototype = obj;
+        return new fn();
+    }
+
+    var demo = {
+        name: 1,
+        obj: {
+            title: '测试title'
+        }
+    }
+    var extObj = create(demo);
+    console.log(extObj);
+
+    var demo2 = function () {};
+    demo2.prototype.name = 'protoName',
+        demo2.prototype.obj = {
+            title: '测试proto'
+        };
+    var extObj2 = create(demo2);
+    console.log(extObj2);
+
+    console.log('构造函数继承测试------------------------------------');
+    /**
+        构造函数式继承
+    */
+    function constrParent() {
+        this.name = 'liuli';
+        this.age = 1;
+        this.obj = {
+            title: '构造函数继承超类'
+        }
+    };
+
+    function constrFn() {
+        constrParent.call(this);
+        this.sex = '男';
+    }
+    var conInstance = new constrFn();
+    console.log(conInstance);
+
+    console.log('组合式继承测试------------------------------------');
+    /**
+        组合式继承
+    */
+    function CombineParent() {
+        this.name = 'liulingyu';
+        this.age = 1;
+        this.obj = {
+            title: '组合式继承超类构造'
+        }
+    }
+    CombineParent.prototype.page = '1'
+    CombineParent.prototype.fn = function () {
+        console.log(this.page)
+    };
+
+    function ConbineFn() {
+        CombineParent.call(this);
+        this.sex = '男';
+    }
+    ConbineFn.prototype = new CombineParent();
+    ConbineFn.constructor = ConbineFn;
+    var combineInstance = new ConbineFn();
+    console.log(combineInstance);
+
+    console.log('寄生式继承---------------------------------');
+    /**
+        寄生式继承（对象增强方式）
+    */
+    function ParasiticFactory(obj) {
+        const object = Object.create(obj);
+        object.name = '刘';
+        return object;
+    }
+    var pdemo = {
+        name: '李',
+        age: 12
+    };
+    var parasInstance = ParasiticFactory(pdemo);
+    console.log(parasInstance);
+
+    console.log('寄生组合式继承-----------------------------');
+    /**
+        寄生组合式继承，解决了组合继承超类构造函数需要执行两次的问题，方法是通过一个中间函数克隆出超类原型对象，在对修改构造函数的原型指向继承超类
+    */
+    function initialPrototype(subFn, parentProto) {
+        var fn = function () {};
+        fn.prototype = parentProto;
+        subFn.prototype = new fn();
+        subFn.constructor = subFn;
+        return new subFn();
+    }
+
+    function ParasCombineParent() {
+        this.name = '刘';
+        this.age = 12;
+    }
+
+    function ParasFn() {
+        ParasCombineParent.call(this);
+        this.sex = '男';
+    }
+
+    var parasInstance = initialPrototype(ParasFn, ParasCombineParent.prototype)
+    console.log(parasInstance);
+
+    console.log('ES6类实现继承');
+    /**
+        es6 extend继承
+    */
+    class Parent {
+        // 相当于es5构造函数
+        constructor(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        // 相当于es6 prototype绑定
+        fn() {
+            console.log(this.name);
+        }
+    }
+
+    class Child extends Parent {
+        constructor(...rest) {
+            // 和es5类似
+            super(...rest);
+            this.sex = '男';
+        }
+    }
+    var classInstance = new Child('刘立', 12);
+    console.log(classInstance);
+</script>
