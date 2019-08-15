@@ -1,0 +1,32 @@
+CommonJS
+CommonJS最早起源与nodeJS对于模块化编程的需要
+commonJS大多数应用在服务端（require、module.exports），客户端需要用es5编写，或者用babel把es6转换为es5
+1、每一个文件作为一个模块，封装一个方法
+2、模块只有一个出口，module.export，把要导出的对象导出
+3、加载方法用require引入其他模块的导出
+// require.js
+const fun = function(){
+	console.log('test');
+}
+const b= 'b';
+module.exports = {
+	fun:fun,
+	b:b
+}
+
+// test.js
+const module = require('./require.js');
+console.log(module.b);  // 'b'
+
+AMD
+define(id,dependencies,factory);
+require(dependencies,callback);
+AMD推崇依赖前置，会并行加载全部依赖，并且执行全部依赖，等到所有依赖执行结束后才会执行主程序，这样会消耗额外的内存，但会使主程序有更快的
+
+CMD
+defind(function(require,export,module){
+	require(id); //获取其他模块
+	exports // 导出模块
+});
+CMD推崇按需加载，加载完全部模块只是下载下来，之后进入主程序，在require引用时再执行依赖的模块，这样会用更高的效率，但相对交互体验会差一些，
+因此AMD一般作用与客户端，而CMD作用与服务器端（node.js）

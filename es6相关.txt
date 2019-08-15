@@ -1,0 +1,159 @@
+let、const都只能存在于块级作用域
+
+let、const声明都会暂时性死区、并且不会进行变量提升
+
+块级作用域内的声明式函数相当于var fn = function(){}；会对函数名进行变量提升，而不是提升整个函数
+
+let、const声明的变量都不允许重复声明
+
+es6中函数的参数如果有默认值会形成一个单独的作用域，这个作用域类似一个局部作用域，这个作用域的参数都是默认let声明
+
+只有全局、函数、函数使用默认参数会产生新的作用域。对象等复杂数据类型是没有单独作用域的
+
+箭头函数内没有this，因此this默认指向父级（箭头函数中arguments等参数也是指向外层），也正是因为这个，箭头函数不能作为构造函数
+
+总结来说，若会产生使this指向不明的情况（异步等）可以使用箭头函数，使其指向外层作用域，对象内、dom事件内都不适用箭 头函数
+
+super关键字只能用在对象的方法之中，指代的是对象的原型对象，相当于Object.getPrototypeOf(this).bind(this);this依然指向的外层的普通对象
+
+get、set方法不能被Object.assign拷贝，可以通过Object.getOwnPropertyDescriptor结合Object.defineProperties使用
+
+Object.entries主要用来转换对象为键值对数组（转换为Map类型），相反有个Object.fromEntries方法用来将Map类型数据转换为对象
+
+Symbol属性是一个常规属性，作用在于产生一个独一无二的属性值，一般用于消除魔术字符串（多个方法中传递，只用来作为做一些基础判断类的字符串，switch中），或者是作为对象
+属性名，防止属性覆盖。Symbol和Symbol.for差别在于后者会登记，可通过Symbol.keyFor查询到，后者对于相同参数不会重复登记
+instanceof判断实例时，实际上调用的是[Symbol.hasInstance]
+Symbol.isConcatSpreadable可以用来设置数组或类数组对象在concat时是否可展开
+
+Proxy用来设置对象（函数）的拦截行为，行为有get、set、construct、has、apply、deleteProperty、defineProperty
+Proxy设置代理的行为类似于对象（函数）的生命周期钩子
+
+get(target, propKey, receiver)：			拦截对象属性的读取          		//proxy.foo
+set(target, propKey, value, receiver)：		拦截对象属性的设置			//proxy.foo=1
+has(target, propKey)：			拦截propKey in proxy的操作		//'property' in proxy  
+deleteProperty(target, propKey)：		拦截delete proxy[propKey]的操作	//delete proxy.foo
+ownKeys(target)：				拦截Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)、for...in	
+defineProperty(target, propKey, propDesc)：	拦截Object.defineProperty(proxy, propKey, propDesc）
+getPrototypeOf(target)：			拦截Object.getPrototypeOf方法
+setPrototypeOf(target, proto)：			拦截Object.setPrototypeOf(proxy, proto)
+apply(target:Function(){}, object, args)：		拦截 Proxy 实例作为函数调用的操作 	//proxy()
+construct(target:Function(){}, args)：		拦截 Proxy 实例作为构造函数调用的操作	//new proxy()
+
+Proxy.revocable方法返回{proxy,revoke}分别是代理对象和取消代理函数。
+只有代理对象会触发拦截行为
+
+proxy代理的作用一般是：
+1、抽离校验模块，对对象行为做校验
+2、通过对代理对象的get方法进行操作，使属性私有化
+
+
+Reflect
+一、Reflect继承了Object并延伸了对象的方法
+二、Reflect对Object的一些方法进行了优化，比如defineProperty，Object在无法定义时会报错，而Reflect会返回false
+三、Reflect修改了一些操作，改为命令式操作，如'name' in obj
+四、Reflect一般是配合Proxy使用，方便在Reflect上使用默认行为
+未来，绝大多数的Object行为将被Reflect取代
+
+Promise
+如果一个promise，resolve另一个promise，它的promise将会被resolve的promise取代
+promise的第二回调reject也会被promise.catch捕获，而且promise中抛出错误也会被catch捕获，因此尽量使用catch代替reject的回调
+promise.then返回的任然是一个promise
+
+Iterator
+Iterator对象类型为{
+		next:function(){
+			return {
+				value:1,
+				done:true
+			}
+		}
+	            }
+任何Map、数组等类型都有[Symbol.Iterator]属性。可以通过array[Symbol.Iterator]()获取数组的Iterator，同时可以自定义迭代器函数，例如定义obj迭代，可以通过for-of遍历obj对象
+var obj = {
+	count:0,
+  	[Symbol.iterator] : function () {
+    		return {
+			// 遍历器需要
+      			next: function () {
+				if(count<3){
+					count++
+           					return {
+              						value: count,
+              						done: false
+            					};
+				}else{
+					return {
+						value:count,
+						done:true
+					}
+       				 }
+ 
+      			},
+			// 遍历break或者异常时调用
+			return(){
+				
+			}
+    		};
+  	}
+};
+同时也可以直接指定迭代器方法，例如arr[Symbol.iterator] = Array.prototype[Symbol.iterator]
+for-of需要Interator，相对于for-in的好处在于可以使用break、continue、return等控制循环遍历
+
+
+Generator函数
+generator函数是一种解决数组遍历的函数，function*(){}
+yield参数用来控制状态，通过generator实例调用next方法会替换yield之后跟随的表达式，同时返回表达式结果
+generator函数可以直接用for-of遍历，同时也可以赋值给对象的symbol.interator参数使对象可遍历
+generator实例调用throw方法会替换当前yield表达式为new throw()，但只执行一次
+generator调用return方法会使返回对象的done状态转为true，表示遍历结束
+yield* 和yield的却别在于返回的一个是表达式结果，另一个是展开可遍历（包含interator）对象的遍历结果
+generator函数不能用new实例化，它的构造函数中不包含this，若果要绑定this，可以通过bind(generator.prototype)的方式
+next()、throw()、return()都会替换yield表达式
+
+主要的应用场景
+1、使异步操作同步化，把异步操作放入yield中，在回调完成后执行generator实例的next方法，使整个操作异步流程的generator函数看起来像同步一样
+2、控制流管理，代替promise的使用
+3、使对象可遍历化
+4、作为一种储存任务的结构。在generator函数中保存任务步骤，通过next方法手动控制，或者通过遍历控制（控制流程管理）
+
+
+class
+相当于是es5的可被实例化函数，constructor函数代表的是函数本身，class里的普通变量相当于es5构造中this.绑定的实例变量，class中的方法相当于es5中函数原型上的方法
+私有化可通过在变量（函数）前加#声明。
+静态属性通过static关键字声明，只能通过类名调用，同样可被子类继承
+class的继承通过extend关键字实现，子类可继承父类的实例方法和原型方法。
+es6中必须要在子类构造函数中使用super关键子，执行super()（相当于Parent.prototype.constructor.apply(this)）这点和es5相同，其实是用来继承父类的实例属性。
+super作为对象时指向的是父类的原型对象（Parent.prototype）
+super在赋值时指向自己（super.x=1相当于this.x=1），在读取时指向父类原型（super.x相当于P.prototype.x）
+super在静态方法中指向父类构造函数
+
+es6中的继承实际上是这么实现的
+class A{} class B{}						Object.setPrototypeOf = function(obj,proto){
+Object.setPrototypeOf(B.prototype, A.prototype);				obj.__proto__=proto;
+Object.setPrototypeOf(B, A);						return obj;
+const b = new B();						}
+es6可以实现集成原生构造函数，而es5由于无法将子类this传递给原生构造函数导致无法继承
+
+thunk函数
+thunk的作用是generator函数的自动流程管理
+function thunk(fn){					
+	// 返回一个thunk包装的函数
+	return function(...args){
+		return function(callback){	// 被thunk包装后的函数返回
+			fn.apply(this,args.push(callback));
+		}
+	}
+}
+通过thunk包装的函数会返回一个接收callback的函数，所以自动执行generator函数只需要把gen.next()方法注入到callback中
+自动执行的run方法可以这样写(前提是每一步都是thunk函数)
+function run(){
+	var ins = gen();  // generator函数
+	function next(data,err){
+		var res = ins.next(data);  // 返回{done:boolean,value:callback}
+		if(res.done){
+			return;
+		}
+		res.value(next);
+	}
+	next();
+}
