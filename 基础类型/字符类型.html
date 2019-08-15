@@ -1,0 +1,27 @@
+<script>
+    const str = 'liulingyu';
+    str.charAt(2); //u
+    str.concat('2019') //liulingyu2019
+    str.indexOf('i') // 1
+    // 容易混淆的
+    str.substr(0, 3); // liu    第一个参数为起始，第二个为长度
+    str.substring(3, 9) // lingyu    3-9位
+    str.substring(3, -1) // liu     0-3位     
+    str.slice(3, 9) // lingyu  3-9位
+    str.slice(3, -1) //lingy    3至倒数第二位
+    /**
+        由此可见，差异主要在
+            substr是可以根据长度截取
+            substring和slice是根据start、end判断
+            substring和slice差异在于负数情况下，substring会判断0，slice会判断位length+负数
+    */
+    str.replace(/liu/, ''); //lingyu
+
+    // es6新
+    str.includes('i') // true  用来替换indexof，同样数组也有
+    str.startsWith('ling') //false
+    str.endsWith('yu') //true
+
+    // 遍历
+    // for-of  for循环  for-in
+</script>
