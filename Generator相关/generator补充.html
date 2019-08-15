@@ -1,0 +1,78 @@
+<script>
+    /**
+        generator函数是一种解决数组遍历的函数，function*(){}
+        yield参数用来控制状态，通过generator实例调用next方法会替换yield之后跟随的表达式，同时返回表达式结果
+        generator函数可以直接用for-of遍历，同时也可以赋值给对象的symbol.interator参数使对象可遍历
+        generator实例调用throw方法会替换当前yield表达式为new throw()，但只执行一次
+        generator调用return方法会使返回对象的done状态转为true，表示遍历结束
+        yield* 和yield的却别在于返回的一个是表达式结果，另一个是展开可遍历（包含interator）对象的遍历结果
+        generator函数不能用new实例化，它的构造函数中不包含this，若果要绑定this，可以通过bind(generator.prototype)的方式
+        next()、throw()、return()都会替换yield表达式
+    */
+    var gen = function* () {
+        yield 'hello';
+        yield* gen2();
+        yield 'hi';
+    }
+
+    var gen2 = function* () {
+        yield 'gen2';
+        yield 'gen3';
+    }
+    var genInstance = gen();
+    // for (var value of genInstance) {
+    //     console.log(value);
+    // }
+    let result;
+    while (!result || result.done === false) {
+        result = genInstance.next();
+        console.log(result);
+    }
+
+
+    /**
+        generator函数自动流程管理，一般配合苛里化函数把参数展开，把callback暴露出来后，通过把next方法传入callback中，让thunk函数去执行
+    */
+    var thunkTimeout = thunk(callbackFn);
+
+    function thunk(fn) {
+        return function (...rest) {
+            return function (callback) {
+                fn.call(this, ...rest, callback);
+            }
+        }
+    }
+
+    var generator = function* () {
+        yield thunkTimeout(1);
+        yield thunkTimeout(2);
+        yield thunkTimeout(3);
+    }
+
+    function callbackFn(time, callback) {
+        setTimeout(() => {
+            callback();
+        }, time ? time * 1000 : 1000);
+    }
+
+    function print() {
+        console.log('timeout!');
+    }
+
+    // thunkTimeout(1)(function(){console.loe('timeout!')});   // timeout
+    // run方法中自定义callback函数，由于之前thunk函数已经暴露出callback，这里定时打印了一段话
+    var run = function (fn) {
+        var gen = fn();
+
+        function next(data) {
+            var result = gen.next(data);
+            if (result.done) {
+                return;
+            }
+            print();
+            result.value(next);
+        }
+        next();
+    }
+    run(generator);
+</script>
