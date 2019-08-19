@@ -1,0 +1,21 @@
+<script>
+    /**
+        总体的思路在于递归完成参数的保存，方便最后一步执行，难点在于递归循环体不好找
+    */
+    function thunk(fn, args = []) {
+        const paramLength = fn.length; // 函数参数个数
+        // 递归的循环体
+        return function (param) {
+            args.push(param); // 保存参数
+            if (args.length < paramLength) {
+                return thunk(fn, args)
+            }
+            fn.call(this, ...args);
+        };
+    };
+    var demoFn = function (a, b, c) {
+        console.log(`${a}-${b}-${c}`);
+    }
+    var thunkFn = thunk(demoFn);
+    thunkFn(1)(2)(3);
+</script>
