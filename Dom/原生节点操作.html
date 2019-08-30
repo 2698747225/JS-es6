@@ -1,6 +1,72 @@
 <body>
-    <div id="rootNode">根节点</div>
+    <div id="rootNode">根节点
+        <ul id="ul">
+            <li id="1">
+                1
+            </li>
+            <li id="2">
+                2
+            </li>
+            <li id="3">
+                3
+            </li>
+        </ul>
+    </div>
+    <div>
+        <button onclick="appendchild()">appendChild</button>
+    </div>
+    <div>
+        <button onclick="insertbefore()">insertBefore</button>
+    </div>
+    <div>
+        <button onclick="replacechild()">replaceChild</button>
+    </div>
+    <div>
+        <button onclick="removechild()">removeChild</button>
+    </div>
+    <div>
+        <button onclick="clonenode()">cloneNode</button>
+    </div>
 </body>
 <script>
-
+    var ul = document.getElementById('ul');
+    var newEle = document.createElement('label');
+    var first = document.getElementById('1')
+    var second = document.getElementById('2')
+    var third = document.getElementById('3')
+    newEle.innerText = "新节点";
+    /** 
+        appendChild，父节点末尾插入新节点
+    */
+    function appendchild() {
+        ul.appendChild(newEle);
+    }
+    /**
+        insertBefore 父节点中指定位置插入新节点
+    */
+    function insertbefore() {
+        // 不选定默认位置，则插入末尾
+        // ul.insertBefore(newEle,null);
+        ul.insertBefore(newEle, second);
+    }
+    /**
+        replaceChild 父节点中替换某节点
+    */
+    function replacechild() {
+        ul.replaceChild(newEle, second);
+    }
+    /**
+        removeChild 父节点中删除节点
+    */
+    function removechild() {
+        ul.removeChild(second);
+    }
+    /**
+        cloneNode 克隆节点
+    */
+    function clonenode() {
+        // clone接收一个参数布尔类型，true为深拷贝
+        var li = second.cloneNode(true);
+        ul.appendChild(li);
+    }
 </script>
