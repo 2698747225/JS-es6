@@ -1,0 +1,23 @@
+<body>
+    <ul onclick="ulClick(event)">
+        <li>
+            节点1
+        </li>
+        <li>
+            节点2
+        </li>
+        <li>
+            节点3
+        </li>
+    </ul>
+</body>
+<script>
+    /** 
+        点击节点1，事件会先由ul的dom捕获，然后传递到li，target对象指向的是触发的li节点，再由li通过事件冒泡传递给ul，所以绑定方法监听的是在ul上
+        currentTarget：触发事件的dom
+        target：绑定事件监听的dom
+    */
+    function ulClick(evt) {
+        console.log(evt)
+    }
+</script>
