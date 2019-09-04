@@ -4,11 +4,26 @@
     -->
 </body>
 <script>
-    (function timeout() {
-        setTimeout((a, b, c) => {
-            console.log(a);
-            console.log(b);
-            console.log(c);
-        }, 1000, a, b, c)
-    })();
+    // 有趣的闭包题
+    function fn1() {
+        for (var i = 0; i < 4; i++) {
+            var tc = setTimeout(function (i) {
+                console.log(i);
+                clearTimeout(tc)
+            }, 10, i)
+        }
+    }
+    fn1() // 0 1 2 
+    // 原因在于timeout函数内的tc是外部变量，这里tc永远是最后一个创建的timeout，因此只会clear最后一个 
+
+    function fn2() {
+        for (var i = 0; i < 4; i++) {
+            var tc = setInterval(function (i, tc) {
+                console.log(i);
+                clearInterval(tc)
+            }, 10, i, tc);
+        }
+    }
+    fn2() //0 1 2 3 3 3 ....
+    // tc实际上做了变量提升，而clear的tc只是前一个返回的tc,所以最后一个没法清除
 </script>
