@@ -1,0 +1,14 @@
+<body>
+    <!-- 
+        神奇的setTimeout竟然有多个参数
+    -->
+</body>
+<script>
+    (function timeout() {
+        setTimeout((a, b, c) => {
+            console.log(a);
+            console.log(b);
+            console.log(c);
+        }, 1000, a, b, c)
+    })();
+</script>
