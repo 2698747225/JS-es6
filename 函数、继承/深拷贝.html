@@ -1,5 +1,6 @@
 <script>
     function judgeType(param) {
+        // 这里使用的是Object构造函数的protoType上的toString方法，而非Function上的
         return Object.prototype.toString.apply(param).slice(8, -1);
     }
 

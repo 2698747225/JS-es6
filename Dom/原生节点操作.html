@@ -27,6 +27,9 @@
     <div>
         <button onclick="clonenode()">cloneNode</button>
     </div>
+    <div>
+        <button onclick="querySelector()">打印querySelector结果</button>
+    </div>
 </body>
 <script>
     var ul = document.getElementById('ul');
@@ -68,5 +71,11 @@
         // clone接收一个参数布尔类型，true为深拷贝
         var li = second.cloneNode(true);
         ul.appendChild(li);
+    }
+    /**
+        querySelector 查找节点
+    */
+    function querySelector() {
+        console.log(document.querySelector('ul'));
     }
 </script>
