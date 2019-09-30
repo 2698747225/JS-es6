@@ -1,0 +1,35 @@
+<html>
+<div class="head">
+    <div>
+        <img alt="" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" />
+    </div>
+</div>
+<!-- 
+        transition作为设置动画延迟效果，第一个参数用来限定元素，第二个为执行时间，第三个为效果，第四个为延迟
+        transform-origin是针对transform变换时的原点(X,Y)
+    -->
+
+</html>
+<style>
+    .head {
+        height: 200px;
+        width: 200px;
+        border-radius: 50%;
+        display: inline-block;
+        cursor: pointer;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2)
+    }
+
+    .head div:nth-child(1),
+    img {
+        border-radius: 50%;
+        height: inherit;
+        width: inherit;
+        transition: all 0.3s ease-in-out;
+        transform-origin: 100% 50%;
+    }
+
+    .head div:nth-child(1):hover {
+        transform: translate(10%, -20%) rotate(-100deg);
+    }
+</style>
