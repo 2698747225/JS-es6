@@ -3,6 +3,9 @@
     <div>
         <img alt="" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" />
     </div>
+    <div>
+        <img alt="" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" />
+    </div>
 </div>
 <!-- 
         transition作为设置动画延迟效果，第一个参数用来限定元素，第二个为执行时间，第三个为效果，第四个为延迟
@@ -17,7 +20,8 @@
         border-radius: 50%;
         display: inline-block;
         cursor: pointer;
-        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2)
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        position: relative;
     }
 
     .head div:nth-child(1),
@@ -27,6 +31,18 @@
         width: inherit;
         transition: all 0.3s ease-in-out;
         transform-origin: 100% 50%;
+        z-index: 1;
+        position: relative;
+    }
+
+    .head div:nth-child(2),
+    img {
+        border-radius: 50%;
+        height: inherit;
+        width: inherit;
+        position: absolute;
+        z-index: 0;
+        top: 0;
     }
 
     .head div:nth-child(1):hover {
