@@ -1,0 +1,47 @@
+<script>
+    /**
+        观察者模式原理是：观察者将自己注册到被观察对象中，当被观察对象发生变化，会通知观察者更新
+        发布/订阅模式的原理是：观察者将自己想要观察的事件注册到调度中心，当事件触发时，被观察对象发布事件到调度中心，再由调度中心通知观察者更新
+        简单来说就是对于观察者模式而言，被观察对象只要变化都会通知到观察者，而发布/订阅模式中，观察者只会注册自己要观察的方法，只要方法执行，就会发出观察者更新。也就说
+        被观察对象可能执行其他方法，但该方法并没有被订阅，则不会触发观察者更新
+    */
+    class Observable {
+        constructor() {
+            this.obArray = [];
+        }
+
+        addSub(observer) {
+            this.obArray.push(observer);
+        }
+
+        delete(observer) {
+            this.obArray.splice(this.obArray.find(observer), 1);
+        }
+
+        emit() {
+            this.obArray.forEach(observer => observer.update());
+        }
+    };
+
+    class Observer {
+        constructor() {
+
+        }
+        update() {
+            console.log(`${Observer.name}观察者更新！`);
+        }
+    }
+
+    var observer1 = new Observer();
+    var observer2 = new Observer();
+
+    var observable = new Observable();
+    // 观察者订阅
+    observable.addSub(observer1);
+    observable.addSub(observer2);
+    observable.emit();
+
+    window.onclose = function () {
+        observable.obArray.forEach(observer => observable.delete(observer));
+    }
+</script>

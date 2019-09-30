@@ -1,0 +1,43 @@
+<script>
+    var globalId = -1;
+    class Public {
+        constructor() {
+            this.topics = {};
+        }
+        subscribe(topic, func) {
+            if (!this.topics[topic]) {
+                this.topics[topic] = [];
+            }
+            const obj = this.topics[topic].push({
+                token: ++globalId,
+                callback: func
+            });
+            return obj.token;
+        }
+
+        public(topic, ...rest) {
+            if (!this.topics[topic]) {
+                return false;
+            }
+            this.topics[topic].forEach(observer => {
+                observer.callback(...rest);
+            });
+        }
+
+        unSubscribe(token) {
+            for (const key in this.topics) {
+                const idx = this.topics[key].findIndex(item => item.token === token);
+                idx && this.topics[key].splice(idx, 1);
+            }
+        }
+    }
+    var public = new Public();
+    public.subscribe('update', () => {
+        console.log('updateChange!')
+    });
+    public.subscribe('create', (...rest) => {
+        console.log(`create ${rest[0]}`);
+    })
+    // 与观察模者模式表现形式上的差别
+    public.public('create', 'success');
+</script>
