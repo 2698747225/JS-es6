@@ -1,0 +1,44 @@
+<!--
+    偏函数是指固定某个多元函数的部分参数
+    坷里化是把某个多元函数分隔成多个一元函数
+-->
+<script>
+    // 偏函数
+    function partial(fn, ...rest) {
+        return (...args) => {
+            // 保证参数的顺序
+            return fn.call(this, ...rest, ...args);
+        };
+    }
+    // 例子
+    function demo(...rest) {
+        console.log(rest.reduce((a, b) => {
+            return a + b;
+        }));
+    }
+    demo(1, 2, 3, 4); // 10
+    // 保留前两个变量为固定变量，这个例子并没有什么意义，只是为了说明偏函数的用法
+    var parDemo = partial(demo, 1, 2);
+    parDemo(3, 4); // 10
+
+    // 坷里化
+    function curry(fn, args = []) {
+        const argLength = fn.length;
+        if (args.length < argLength) {
+            return function (arg) {
+                args.push(arg);
+                return curry(fn, args);
+            };
+        } else {
+            fn.call(this, ...args);
+        }
+    }
+
+    function demo2(a, b, c, d) {
+        console.log([a, b, c, d].reduce((a, b) => {
+            return a + b;
+        }));
+    }
+
+    var curryDemo = curry(demo2);
+</script>
