@@ -14,7 +14,7 @@ es6ÖĞº¯ÊıµÄ²ÎÊıÈç¹ûÓĞÄ¬ÈÏÖµ»áĞÎ³ÉÒ»¸öµ¥¶ÀµÄ×÷ÓÃÓò£¬Õâ¸ö×÷ÓÃÓòÀàËÆÒ»¸ö¾Ö²¿×÷ÓÃÓò£
 
 ×Ü½áÀ´Ëµ£¬Èô»á²úÉúÊ¹thisÖ¸Ïò²»Ã÷µÄÇé¿ö£¨Òì²½µÈ£©¿ÉÒÔÊ¹ÓÃ¼ıÍ·º¯Êı£¬Ê¹ÆäÖ¸ÏòÍâ²ã×÷ÓÃÓò£¬¶ÔÏóÄÚ¡¢domÊÂ¼şÄÚ¶¼²»ÊÊÓÃ¼ı Í·º¯Êı
 
-super¹Ø¼ü×ÖÖ»ÄÜÓÃÔÚ¶ÔÏóµÄ·½·¨Ö®ÖĞ£¬Ö¸´úµÄÊÇ¶ÔÏóµÄÔ­ĞÍ¶ÔÏó£¬Ïàµ±ÓÚObject.getPrototypeOf(this).bind(this);thisÒÀÈ»Ö¸ÏòµÄÍâ²ãµÄÆÕÍ¨¶ÔÏó
+super¹Ø¼ü×ÖÖ»ÄÜÓÃÔÚ¶ÔÏóµÄ·½·¨Ö®ÖĞ£¬Ö¸´úµÄÊÇ¶ÔÏóµÄÔ­ĞÍ¶ÔÏó£¬Ïàµ±ÓÚObject.getPrototypeOf.bind(this)(this);thisÒÀÈ»Ö¸ÏòµÄÍâ²ãµÄÆÕÍ¨¶ÔÏó
 
 get¡¢set·½·¨²»ÄÜ±»Object.assign¿½±´£¬¿ÉÒÔÍ¨¹ıObject.getOwnPropertyDescriptor½áºÏObject.definePropertiesÊ¹ÓÃ
 
@@ -51,7 +51,7 @@ Reflect
 Ò»¡¢Reflect¼Ì³ĞÁËObject²¢ÑÓÉìÁË¶ÔÏóµÄ·½·¨
 ¶ş¡¢Reflect¶ÔObjectµÄÒ»Ğ©·½·¨½øĞĞÁËÓÅ»¯£¬±ÈÈçdefineProperty£¬ObjectÔÚÎŞ·¨¶¨ÒåÊ±»á±¨´í£¬¶øReflect»á·µ»Øfalse
 Èı¡¢ReflectĞŞ¸ÄÁËÒ»Ğ©²Ù×÷£¬¸ÄÎªÃüÁîÊ½²Ù×÷£¬Èç'name' in obj
-ËÄ¡¢ReflectÒ»°ãÊÇÅäºÏProxyÊ¹ÓÃ£¬·½±ãÔÚReflectÉÏÊ¹ÓÃÄ¬ÈÏĞĞÎª
+ËÄ¡¢ReflectÒ»°ãÊÇÅäºÏProxyÊ¹ÓÃ£¬·½±ãÔÚproxy´úÀíÖĞÊ¹ÓÃÄ¬ÈÏĞĞÎª
 Î´À´£¬¾ø´ó¶àÊıµÄObjectĞĞÎª½«±»ReflectÈ¡´ú
 
 Promise
@@ -97,7 +97,7 @@ var obj = {
   	}
 };
 Í¬Ê±Ò²¿ÉÒÔÖ±½ÓÖ¸¶¨µü´úÆ÷·½·¨£¬ÀıÈçarr[Symbol.iterator] = Array.prototype[Symbol.iterator]
-for-ofĞèÒªInterator£¬Ïà¶ÔÓÚfor-inµÄºÃ´¦ÔÚÓÚ¿ÉÒÔÊ¹ÓÃbreak¡¢continue¡¢returnµÈ¿ØÖÆÑ­»·±éÀú
+for-ofĞèÒªIterator£¬Ïà¶ÔÓÚfor-inµÄºÃ´¦ÔÚÓÚ¿ÉÒÔÊ¹ÓÃbreak¡¢continue¡¢returnµÈ¿ØÖÆÑ­»·±éÀú
 
 
 Generatorº¯Êı
@@ -157,3 +157,5 @@ function run(){
 	}
 	next();
 }
+
+import()·µ»ØµÄÊÇÒ»¸öpromise¶ÔÏó

@@ -1,0 +1,55 @@
+Subject
+
+Subject是一个Observable同时也是Observer，因此它可以执行next、complete、error方法。同时它也支持绑定多个观察者
+
+BehaviorSubject：Observable
+会储存要发送给订阅者的最新的值，无论何时，当一个新的观察者订阅时会立即接受当前存储的值
+	var behaviorSubject = new BehaviorSubject(0);
+	behaviorSubject .subscribe({item=>{
+		console.log(item);
+	});
+	behaviorSubject .next(1);
+	behaviorSubject .next(2);
+	behaviorSubject .subscribe(item=>{
+		console.log(item);
+	});
+	behaviorSubject.next(3);
+最后return 0 1 2 2 3 3 ，初始化可观察对象存储了0的值，在第一次被订阅的时候传递0，在接受2的时候存储数值2，在第二次被订阅的时候输出它
+
+ReplaySubject：Observable
+类似于BehaviorSubject，不同点在于可以在实例化的时候选择存储的长度
+	var replaySubject = new ReplaySubject(3); // 存储3个值
+	replaySubject.subscribe(item=>{
+		console.log(item);
+	});
+	replaySubject.next(1);	
+	replaySubject.next(2);
+	replaySubject.next(3);
+	replaySubject.subscribe(item=>{
+		console.log(item);
+	});
+	replaySubject.next(4);
+1 2 3 1 2 3 4 4
+新存储的值会覆盖掉第一个，类似堆
+
+AsyncSubject：Observable
+只发送可观察对象的最新值，并且只在complete时发送，类似于last()
+var asyncSubject = new AsyncSubject();
+asyncSubject.subscribe(item=>{
+	console.log(item);
+});
+asyncSubject.next(1);
+asyncSubject.next(2);
+asyncSubject.next(3);
+asyncSubject.next(4);
+asyncSubject.complete();
+输出4
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,24 @@
+Flex布局
+
+Flex布局分为两种属性，容器属性和项目属性（子元素）
+
+容器属性包括
+	flex-direction（容器内容排列方向）：（row、row-reverse、column、column-reverse）
+	flex-wrap（容器换行）
+	flex-flow（综合以上两个）
+	justify-content：（容器水平内容对齐方向）
+	align-item：（容器垂直内容对齐方向）
+	align-content（针对多行有效，设置行在容器交叉轴的对齐方向）
+
+项目（内容）属性包括
+	order（排列优先级）
+	flex-grow（项目放大比例）
+	flex-shrink（项目缩小比例）
+	flex-basis（项目固定宽度）    比width宽度优先级高，flex-basis为0时会忽略宽度以内容为准，flex-basis为auto时，会以宽度为准（实际上flex-basis是根据主轴为准，这意味着这个有
+	可能为高度）。flex-basis为0时，flex会等比放大，不会考虑内部的比例尺寸。
+	flex（flex-grow flex-shrink flex-basis）
+	align-self（项目对齐方式，会覆盖全局的align-item属性）
+
+align-item和align-content有很多相似之处，align-content在多行有效时，stretch属性由align-content控制，align-content设置多行的交叉轴对齐方式，align-item设置单行内元素的交叉轴对齐
+方式
+	

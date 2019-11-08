@@ -1,0 +1,46 @@
+http1.1 
+catch（缓存机制）
+If-Modified-Since发送浏览器页面最后的修改时间，若这个时间与服务器上的文件的最后修改时间相同，那么服务器端会响应304，客户端就直接使用本地缓存文件。若
+时间不一致，就返回200和新的文件
+
+If-None-Match
+第一次http请求，http的response中会加入ETag字段（字符串），在下一次请求中加入If-None-Match字段（ETag的值），服务器验证ETag字段和If-None-Match
+字段相同，表示资源没有更新，将返回304状态码，浏览器端会使用缓存文件
+
+Pragma
+防止页面被缓存，和Cache-control:no-cache作用相同，Pragma:no-cache
+
+Cache-control
+
+
+Clicent
+Accept（接受类型）
+表示可以接收的多媒体类型，常用的text/html，就是我们平时的html，为*表示全部。若服务器端无法返回对应类型，报406错误码
+
+Accept-Encoding
+浏览器申明自己的接收编码压缩的方法，例如压缩类型的gzip
+
+Accept-Language
+浏览器申明自己接收的语言，例如gbk
+
+user-Agent
+浏览器的版本信息
+
+Accept-Charset
+浏览器申明自己接收的字符集
+
+
+Cookie
+cookie
+
+
+Entity
+Content-Length
+发送给HTTP服务器数据的长度
+
+Content-Type 编码格式（声明消息主体格式）
+text/html  image/jpeg
+
+Transport （都是http1.1新的特性）
+connection  
+host 

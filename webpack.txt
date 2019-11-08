@@ -1,0 +1,56 @@
+webpack作为一个打包工具，比起gulp拥有es6转换es5，jsx转换js，ts编译js等
+
+什么是webpack？
+webpack是一个打包模块化javascript的工具，在webpack里一切文件皆模块，通过loader转换文件，通过plugin注入钩子，最后输出由多个模块组合成的文件，webpack
+专注构建模块化项目。WebPack可以看做是模块打包机：它做的事情是，分析你的项目结构，找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言
+（Scss，TypeScript等），并将其打包为合适的格式以供浏览器使用。
+
+webpack工作方式
+把你的项目当做一个整体，通过一个给定的主文件（如：index.js），Webpack将从这个文件开始找到你的项目的所有依赖文件，使用loaders处理它们，最后打包为一个（或多个）
+浏览器可识别的JavaScript文件。
+
+几种常见的loader
+file-loader：把文件输出到一个文件夹中，代码中用相对路径引用
+url-loader：把文件模块打包成base64编码格式注入到代码中
+image-loader：加载并压缩图片文件
+babel-loader：es6、es7转es5
+css-loader：支持css模块化
+style-loader：把css注入代码中
+
+几个常见的plugin
+html-webpack-plugin：生成创建html入口
+clean-webpack-plugin：删除多余的打包文件
+
+相比较gulp等打包工具优缺点
+优点：专门针对模块化开发，仅需要一个入口一个出口。有很多plugins方便拓展功能
+缺点：只能针对模块化开发
+
+什么是loader，什么是plugin
+loader是模块转换器，将模块中的内容转换成浏览器可识别内容
+plugin是在构建过程中添加的拓展逻辑，用来自定义打包方式
+
+如何用webpack处理长缓存	
+可以通过输出地址拼接一串hash字符串的方式，一直修改文件名，使浏览器不会访问到缓存的文件
+
+怎样优化打包效率
+1、更换更快速的plugin，例如fast-saas-loader代替saas-loader
+2、使用tree-shaking去除代码中的无效引用
+3、babel-loader使用缓存机制
+4、比较大的插件类，不使用模块引入而是使用script方式，并添加ProvidePlugin（自动加载模块）
+5、优化构建的搜索路径，使用resolve.alias
+
+resolve.alias用来配置新的映射路径
+resolve:{
+	alias:{
+		components:'./src/components'
+	}
+}
+可以通过import buttion from 'components/button'导入相当于 import button from '/src/components/button'
+末尾可以加入$表示以该关键字结尾的文件,button$配置后，直接通过import button$导入
+
+CommonsChunkPlugin可以使wabpack对源文件的打包进行分离，防止因为脚本包hash值变化导致浏览器刷新vendor.js源码包
+chunks用来指定source chunk入口，默认为entry path
+filename：打包后的common chunks名
+name：chunk名，用来进行合并
+minChunks用来抽取公共模块，设置为Infinity，可以用来抽取公共模块，
+children、async一般用来申明异步加载模块来源，防止多次打包

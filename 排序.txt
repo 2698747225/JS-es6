@@ -1,0 +1,94 @@
+冒泡
+var maopao = function(arr){
+	// 外层比较次数
+	for(let i=arr.length-1;i>=1;i--){
+		// 相近元素比较次数				
+		for(let j =0;j<i;j++){
+			if(arr[j]>arr[j+1]){
+				const temp = arr[j];
+				arr[j]=arr[j+1];
+				arr[j+1]=temp;
+			}
+		}
+	}
+	return arr;
+}
+需要记住的是内层循环决定数组内元素之间比较。从0和1比较直到arr.length-2和arr.length-1比较，第一次比较的次数为arr.length-2（数组元素数-1），之后比较次数每次
+去除最后一位，也就是再减1，比较次数由外层循环控制，外层由数组长度循环到1（最后一次之比较一次）
+
+简单排序
+var jiandan = function(arr){
+	for(let i =0;i<arr.length-1;i++){
+		let min=i;
+		for(let j =i;j<arr.length;j++){
+			if(arr[min]>arr[j]){
+				min=j;
+			}
+		}
+		const temp = arr[i];
+		arr[i] = arr[min];
+		arr[min]=temp;
+	}
+	return arr;
+}
+方式是从数组中寻找最小的值排到左侧，比较的次数为arr.length-2，外层循环控制。内层用一个值保存最小值的index，当循环完内层后，把最小值插入到外层已排好的顺序之后。
+内层的最大循环次数是arr.length-1
+
+插入排序
+var charu = function(arr){
+	for(let i=1;i<arr.length;i++){
+		// 存储无序序列第一个
+		const t = arr[i];
+		for(let j=i-1;j>=0;j--){
+			if(t<arr[j]){
+				arr[j+1]=arr[j];
+				arr[j]=t;
+			}else{
+				arr[j+1]=t;
+				break;
+			}
+		}
+	}
+	return arr;
+}
+方式是把数组分成有序数组（左侧）和无序数组（右侧），默认初始左侧数组长度为1。每次从右侧无序数组中取第一个值和左侧有序数组（从右至左）某个值做比较。有序若大于
+无序值，则把有序值向后移一位，有序值之前位置为无序值。
+
+希尔排序
+var shellSort = function(arr){
+	const len = arr.length;
+	// 跨度
+	for(let gap=Math.floor(len/2);gap>0;gap=Math.floor(gap/2)){
+		for(let left=gap;left<arr.length;left++){
+			let temp = arr[left];
+			let i=left-gap;
+			for(;i>=0&&temp<arr[i];i-=gap){
+				arr[i+gap]=arr[i];
+			}
+			arr[i+gap]=temp;
+		}
+	}
+	return arr;
+}
+希尔排序是带有跨度的插入排序。最外层控制跨度，每次跨度缩小一倍，第二层控制右侧无序数组（左侧其实也是无序的）。从右侧第一位开始和左侧做比较。第三个循环控制左侧，右侧第一个数和
+左侧相差一个跨度的数对比，若小于这个数，则左侧数后排跨度个字段，直到右侧比左侧大为止，在左侧被比较数加跨度个字段插入右侧数
+注意：希尔排序左右侧对比时，尽量保证两边相等也进行交换。
+
+快速排序
+var fastSort = function(arr){
+	if(arr.length<=1){
+		return arr;
+	}
+	const mid = arr.splice(Math.floor(arr.length/2),1)[0];
+	const left=[],right=[];
+	for(let i=0;i<arr.length;i++){
+		if(arr[i]<=mid){
+			left.push(arr[i]);
+		}else{
+			right.push(arr[i]);
+		}	
+	}
+	return fastSort(left).concat([mid],fastSort(right));	
+}
+快速排序类似二分排序的方法，从数组中随意选择一个中间值，把数组和中间值做对比，小的值放到左侧，大的值放到右侧，然后递归左侧、右侧数组再进行以上操作，直到把数组全部拆分为长度1
+

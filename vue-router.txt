@@ -1,0 +1,29 @@
+命名路由
+例如针对不同id的用户，/user/:id。在实例中可以通过$route.params.id获取，通过路由props参数的设置，可以解除耦合（通过props接收动态路径参数）。组件中可以通过
+$router.push(name:'name',params:{id:id})的方式跳转命名路由。路由参数变化可以通过beforeRouteUpdate监听。
+
+跳转路由携带query参数$router.push(name:'/route',query:{name:123})  //  /route/name=123
+
+router.replace和push相似，不同点在于不会向history栈中保留历史路由
+
+命名视图可以使单个页面下面同时展现多个路由页面，通过routes的组件参数中传递数组完成。（路由JS中以对象别命名的方式保存，router-view中通过name标记）
+
+全局路由守卫
+router实例的beforeEach方法，返回的回调中有路由的方向。路由对应的组件会等待守卫的resolve，通过next方法执行。同时每个路由又有自己的守卫beforeEnter。每个组件
+有beforeRouteEnter（路由执行前，由于在这个阶段组件未创建，因此访问不到this，可以在next中传递回调函数，在回调函数中访问组件this对象）、beforeRouteUpdate（路由参数发生变化）、
+beforeRouteLeave（离开当前组件路由）
+
+路由元信息
+针对每个路由设置对应的权限，{path:'a',components:'componentA',meta:AuthPath}。在路由守卫中可以获取到meta信息，对信息进行校验、进行权限校验
+
+在定义router实例时，同时可以设置切换页面的滚动位置（感觉用处不大）
+
+路由懒加载，通过动态引入组件的方式，const Foo = ()=>import('./test.vue') // 返回一个promise，再通过babel中的syntax-dynamic-import解析，可以实现懒加载路由，
+在组件被引用时，以工厂函数返回组件的引用promise，实现懒加载路由
+
+全局
+beforeEach、beforeResolve、afterEach
+路由
+beforeEnter
+组件内
+beforeRouteUpdate、beforeRouteEnter、beforeRouteLeave

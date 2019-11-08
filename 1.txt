@@ -1,0 +1,22 @@
+ng serve 后会根据angular-cli（6.x版本前）angular.json配置的入口找到main.ts文件
+
+main.ts再加载根模块AppModule
+
+NgModule声明angular模块中创建的内容
+
+declarations声明模板中的内容，一般为组件，也包括指令（本地作用域）
+
+providers用于声明服务（全局作用域）
+
+若想要在组件中使用外面的模块，通过import的方式
+
+一般一个模块包含若干个组件，模块相当于对于一个功能的封装，组件相当于angular1的指令，对于模板的封装
+
+服务需要通过@Injectable()设置
+
+静态参数直接通过类名调用
+
+组件内的构造函数会自动实例化，在init事件执行前
+
+组件之间传递数据参数通过在模板上传递，在子组件上通过@input或@output传递
+

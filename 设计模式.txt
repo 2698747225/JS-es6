@@ -1,0 +1,88 @@
+最常见的设计模式
+①工厂模式（返回对象）
+函数内部创建函数，给创建的函数绑定属性和方法，然后将函数返回出去。和构造函数模式比较相似，但不使用构造函数，因此不需要实例化使用
+var factory = function(){
+	var obj = new Object();
+	obj.param1 = 1;
+	obj.fnc = function(){
+		console.log('函数');
+	}
+	return obj;
+}
+var obj1 = factory();
+console.log(obj1.param1,obj1.fnc());  // 1 函数
+
+②模块模式（自执行函数）
+闭包就是最基础的模块模式，函数把变量和方法封装在函数内，只能通过函数访问其内部（局部变量）
+var persional = function(){
+	var param1=1;
+	var param2=2;
+	var a = function(){
+		return 'a';	
+	}
+	var b = function(){
+		return 'b';
+	}
+}();
+// 访问
+console.log(persional.param1,persional.a()); // 1 a
+
+③构造函数模式（函数属性使用this赋值）(构造函数)
+模块模式的升级版，创建方法和JAVA特性封装相似，不同点是JS构造方法是在原型上面。调用和JAVA相同，实例化这个构造函数
+var Construct = function(name,age){
+	this.name = name;
+	this.age = age;
+}
+construct.prototype = function(){
+	constructor:Construct; // 构造函数指向
+	fnc1:function(){
+		console.log('函数1');
+	};
+}
+var con = new Construct('name',1);
+console.log(con.name,con.fnc());  // name 函数1
+
+④原型模式
+在原型上共享属性和方法，由于函数实例化之后，实例化对象会指向自己的原型，因此所有实例化对象所指向的原型都是同一个。所以所有对象的原型上的属性都是同一个（共享属性）
+function Per(){
+	Per.prototype.name = '原型属性1'; // 基础类型
+	Per.prototype.age = '原型属性2';
+	Per.prototype.list = [1,2,3]; //引用类型
+}
+var obj1 = new Per();
+var obj2 = new Per();
+console.log(obj1.name,obj2.name);  // 原型属性1 原型属性1    实例化对象时初始化赋值一次
+obj1.name = '修改原型属性1';
+console.log(obj1.name,obj2.name); // 修改原型属性1  原型属性1  
+obj1.list.push(4);
+console.log(obj1.list,obj2.list); //[1,2,3,4]  [1,2,3,4] // 引用类型实例化时获得的是原型的引用地址
+obj1.prototype.name = '修改原型属性1';
+console.log(obj1.name,obj2.name);   // 修改原型属性1 修改原型属性1
+
+混合模式（es6之前使用最广泛的模式   构造函数模式+原型模式）
+构造函数模式的特点是在函数里用this.param = param；的方式将每个属性（基础属性+引用类型属性）创建。每次实例化生成新的实例时属性都互不相干
+原型模式主要用来实现属性继承，共享属性
+私有属性用用构造，共享属性用原型
+
+⑥单例模式（只返回一个对象）
+var singleton = function(){
+	var instance = null;
+	// 构造
+	var init = function(name,age){
+		this.name = name;
+		this.age = age;
+		this.getParam = function(){
+			console.log('函数');
+		}
+	}
+	return (function(){
+		if(!instance){
+			instance = new init('aa',20);
+		}
+		return instance;
+	});
+}();
+// 只会被实例化一次
+调用的时候singleton().name
+
+⑦观察者模式

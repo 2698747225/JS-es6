@@ -1,0 +1,59 @@
+serviceWorker和webWorker都同样运行在另外一个线程，不会阻塞主线程。
+serviceWorker主要解决离线缓存问题
+
+通过调用navigator上的serviceWorker的注册方法注册serviceWorker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./serviceWorker.js').then(register => {
+          console.log('success');
+        }, err => {
+          console.log('error');
+        })
+      });
+    }
+
+调用install方法进行安装，安装成功后返回一个缓存列表的promise
+self.addEventListener('install', function (event) {
+  // Perform install steps
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+    .then(function (cache) {
+      console.log('Opened cache');
+      return cache.addAll(urlsToCache);
+    })
+  );
+});
+
+添加一个fetch事件监听，拦截所有的请求。再在缓存中匹配这个请求，若有则直接返回，没有则把请求发送出去，在请求返回成功后，调用catch.put方法缓存请求和克隆的请求结果。
+self.addEventListener('fetch', function (event) {
+  event.respondWith(
+    caches.match(event.request).then(function (resp) {
+      return resp || fetch(event.request).then(function (response) {
+        return caches.open(CACHE_NAME).then(function (cache) {
+          cache.put(event.request, response.clone());
+          return response;
+        });
+      });
+    })
+  );
+});
+
+若新建了一个新的缓存地址。则在actived激活监听后，清除不需要的缓存地址
+self.addEventListener('activate', function(event) {
+  var cacheWhitelist = ['v2'];
+
+  event.waitUntil(
+    caches.keys().then(function(keyList) {
+      return Promise.all(keyList.map(function(key) {
+        if (cacheWhitelist.indexOf(key) === -1) {
+          return caches.delete(key);
+        }
+      }));
+    })
+  );
+});
+
+如果需要改变内容，需要每次都更新缓存名称，在启用新的缓存后，需要删除前一个名称，否则新的缓存会进入等待状态，页面上的信息获取的任然是老的缓存内容。
+实际上应用和service-worker并不能完全实现离线，因为有部分请求会把时间信息放在query参数中，每次缓存都会插入新的缓存内容。
+清除service-worker缓存的方法只有修改缓存名称，否则即使是关闭service-worker也不会清除缓存
+activate会在install之后进行，因此delete操作只能在activate中，否则老的缓存还未关闭就清理会导致页面缓存失效
