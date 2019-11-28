@@ -1,0 +1,55 @@
+<script>
+    /**
+        for-in
+        Object.keys()
+        JSON.stringify()
+        Object.assign() 会忽略可枚举属性
+        class的原型方法也都是不可枚举属性
+
+        for-in可遍历继承属性，Object.keys不能，同样Object.getOwnPropertyNames也不能。总结为for-in可遍历原型上的属性，其他都只能遍历自身的。
+    */
+    console.log('测试class原型属性遍历效果-----------------------------');
+    class A {
+        foo() {
+            console.log('foo');
+        }
+        b = 2;
+    }
+    class B extends A {
+        constructor() {
+            super();
+        }
+        a = 1;
+        do() {
+            console.log('do');
+        }
+    }
+    // 测试实例
+    var demo = new B();
+    for (var i in demo) {
+        // 遍历所有属性，结果证明class的原型属性不可枚举
+        console.log(i); // a,b
+    }
+
+    console.log('测试for-in和Object.keys遍历区别-----------------------------');
+
+    function C() {
+        C.prototype.foo = function () {
+
+        };
+    }
+
+    function D() {}
+    D.prototype = new C();
+    D.prototype.test = 2;
+    var demo2 = new D();
+    // 测试Object.keys遍历
+    console.log(Object.keys(demo2)); // []
+    for (var i in demo2) {
+        // 遍历所有属性，
+        console.log(i); // test,foo
+    }
+
+    console.log('Object.getOwnPropertyNames-----------------------------')
+    console.log(Object.getOwnPropertyNames(demo2)); // []
+</script>
