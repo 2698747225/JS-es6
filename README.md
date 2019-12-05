@@ -1,2 +1,2 @@
 # JS-es6
-JS+es6相关
+JS+es6 相关
