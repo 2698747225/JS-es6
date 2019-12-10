@@ -1,0 +1,21 @@
+<body>
+    <canvas id="tutorial" width="300" height="300"></canvas>
+</body>
+<script>
+    var canvasElm = document.getElementById('tutorial');
+    // 检查支持性
+    if (canvasElm.getContext) {
+        var ctx = canvasElm.getContext('2d');
+        // 颜色填充
+        ctx.fillStyle = 'red';
+        // 绘制一个填充矩形
+        // x,y,height,width
+        ctx.fillRect(20, 20, 100, 100);
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(40, 40, 100, 100);
+        // 绘制矩形边框
+        ctx.strokeRect(40, 40, 100, 100);
+        // 清除指定矩形区域
+        ctx.clearRect(42, 42, 96, 96);
+    }
+</script>

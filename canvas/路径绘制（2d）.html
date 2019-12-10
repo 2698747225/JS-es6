@@ -1,0 +1,22 @@
+<body>
+  <canvas id="tutorial" width="300" height="300"></canvas>
+</body>
+<script>
+  var canvasElm = document.getElementById('tutorial');
+  if (canvasElm.getContext) {
+    var ctx = canvasElm.getContext('2d');
+    // 开启一条路径
+    ctx.beginPath();
+    // 画笔移动到100,100
+    ctx.moveTo(100,100);
+    // 绘制到200,200的直线
+    ctx.lineTo(200,200);
+    ctx.lineTo(100,200);
+    // 闭合路径，会返回起始点路径同样会绘制
+    ctx.closePath();
+    // 绘制路径
+    ctx.stroke();
+    // 即使路径封闭了，也会被填充
+    ctx.fill();
+  }
+</script>
