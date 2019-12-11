@@ -1,0 +1,40 @@
+<body>
+  <canvas id="tutorial" width="1000" height="1000"></canvas>
+</body>
+<script>
+  var canvasElm = document.getElementById('tutorial');
+  const blue = '#325FA1';
+  if (canvasElm.getContext) {
+    var ctx = canvasElm.getContext('2d');
+    ctx.beginPath();
+    ctx.save();
+    ctx.translate(100, 100);
+    // 背景
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        // 都为奇数
+        if ((j % 2 === 0 && i % 2 === 0) || (j % 2 !== 0 && i % 2 !== 0)) {
+          ctx.fillStyle = '#fff';
+        }
+        // 偶奇
+        else if ((j % 2 === 0 && i % 2 !== 0) || (j % 2 !== 0 && i % 2 === 0)) {
+          ctx.fillStyle = blue;
+        }
+        ctx.fillRect(j * 10, i * 10, 10, 10);
+      }
+    }
+    ctx.closePath();
+    // 旋转
+    // ctx.rotate(Math.PI / 6);
+    // ctx.clip();
+    ctx.beginPath();
+    for (let k = 0; k < 5; k++) {
+      ctx.lineTo(Math.cos((18 + k * 72) / 180 * Math.PI) * 30 + 50,
+        -Math.sin((18 + k * 72) / 180 * Math.PI) * 30 + 50);
+      ctx.lineTo(Math.cos((54 + k * 72) / 180 * Math.PI) * 50 + 50,
+        -Math.sin((54 + k * 72) / 180 * Math.PI) * 50 + 50);
+    }
+    ctx.closePath();
+    ctx.fill();
+  }
+</script>
