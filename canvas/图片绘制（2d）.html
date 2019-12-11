@@ -1,0 +1,25 @@
+<body>
+  <canvas id="tutorial" width="2000" height="2000"></canvas>
+</body>
+<script>
+  var canvasElm = document.getElementById('tutorial');
+  if (canvasElm.getContext) {
+    var ctx = canvasElm.getContext('2d');
+    var img = new Image()
+    img.src = './绘制图片.jpg';
+    window.onload = function () {
+      /**
+       * @param img 源文件
+       * @param sx 源文件切点x
+       * @param sy 源文件切点y
+       * @param sWidth 切片大小
+       * @param sHeight 切片大小
+       * @param dx 切片位置x
+       * @param dy 切片位置y
+       * @param dWidth 切片宽
+       * @param dHieght 切片高
+       */
+      ctx.drawImage(img, 0, 0, 300, 300, 300, 300, 300, 300);
+    }
+  }
+</script>
