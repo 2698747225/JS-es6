@@ -1,0 +1,16 @@
+<body>
+  <canvas id="tutorial" width="300" height="300"></canvas>
+</body>
+<script>
+  var canvasElm = document.getElementById('tutorial');
+  if (canvasElm.getContext) {
+    var ctx = canvasElm.getContext('2d');
+    // canvas建议对坐标轴进行操作前保存一下之前的状态
+    ctx.save();
+    ctx.translate(100, 100);
+    ctx.rotate(Math.PI / 4);
+    ctx.beginPath();
+    ctx.strokeRect(0, 0, 100, 50);
+    ctx.closePath();
+  }
+</script>
