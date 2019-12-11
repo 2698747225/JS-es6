@@ -14,13 +14,13 @@
       @param radEnd 末尾弧度
       @param direation 绘制方向（true为逆时针，false为顺时针）
     */
-    ctx.arc(50,50,50,-Math.PI/2,Math.PI/2,false);
+    ctx.arc(50, 50, 50, -Math.PI / 2, Math.PI / 2, false);
     ctx.closePath();
     ctx.stroke();
     console.log('------------------------------arcTo------------------------------');
     ctx.beginPath();
     // 从起点开始移动到控制点1，再从控制点1移到控制点2，两条切线绘制路径形成弧线（换句话说弧线与两个线段相切）
-    ctx.moveTo(100,100);
+    ctx.moveTo(100, 100);
     /**
       @param a 控制点1 x
       @param b 控制点1 y

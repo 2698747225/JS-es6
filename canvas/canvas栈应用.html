@@ -1,0 +1,31 @@
+<body>
+  <canvas id="tutorial" width="300" height="300"></canvas>
+</body>
+<script>
+  // 注意的是stroke画轮廓时如果要进行多次绘画，需要申明每次的beginPath和closePath，否则都会从起始点开始绘画
+  var canvasElm = document.getElementById('tutorial');
+  if (canvasElm.getContext) {
+    var ctx = canvasElm.getContext('2d');
+    ctx.beginPath();
+    ctx.strokeStyle = 'red';
+    ctx.arc(100, 100, 50, -Math.PI / 2, 0, false);
+    ctx.save();
+    ctx.stroke();
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.strokeStyle = "green";
+    ctx.arc(100, 100, 50, 0, Math.PI / 2, false);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.restore();
+    ctx.arc(100, 100, 50, Math.PI / 2, Math.PI, false);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.strokeStyle = "green";
+    ctx.arc(100, 100, 50, Math.PI, -Math.PI / 2, false);
+    ctx.stroke();
+    ctx.closePath();
+  }
+</script>
