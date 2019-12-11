@@ -1,0 +1,31 @@
+<body>
+  <canvas id="tutorial" width="300" height="300"></canvas>
+  <canvas id="borderTutorial" width="300" height="300" style="position: relative;"></canvas>
+</body>
+<script>
+  // 填充
+  var canvasElm = document.getElementById('tutorial');
+  if (canvasElm.getContext) {
+    var ctx = canvasElm.getContext('2d');
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 6; j++) {
+        ctx.fillStyle = `rgb(${Math.floor(255 - 42.5 * i)},${Math.floor(255 - 42.5 * j)},0)`;
+        ctx.fillRect(50 * j, 50 * i, 50, 50);
+      }
+    }
+  }
+
+  // 轮廓
+  var borderCanvas = document.getElementById('borderTutorial');
+  if (borderCanvas.getContext) {
+    var btx = borderCanvas.getContext('2d');
+    for (let o = 0; o < 6; o++) {
+      for (let k = 0; k < 6; k++) {
+        btx.strokeStyle = `rgb(${Math.floor(255 - 42.5 * k)},${Math.floor(255 - 42.5 * o)},0)`;
+        btx.shadowColor = btx.strokeStyle;
+        btx.lineWidth = 10;
+        btx.strokeRect(50 * k, 50 * o, 50, 50);
+      }
+    }
+  }
+</script>
