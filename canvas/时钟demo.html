@@ -1,0 +1,92 @@
+<body>
+  <canvas id="tutorial" width="1000" height="1000"></canvas>
+</body>
+<script>
+  // 背景盘和刻度针
+  var drawDial = function () {
+    // 背景盘
+    // ctx.clearRect(0, 0, 500, 500);
+    ctx.translate(200, 200);
+    ctx.arc(0, 0, 200, 0, 2 * Math.PI);
+    ctx.stroke();
+    // 刻度针
+    for (let i = 0; i < 60; i++) {
+      ctx.beginPath();
+      ctx.moveTo(150, 0);
+      ctx.lineTo(190, 0);
+      ctx.rotate(Math.PI * 2 / 60);
+      if (i % 5 === 0) {
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 5;
+      } else {
+        ctx.strokeStyle = 'blue';
+        ctx.lineWidth = 2;
+      }
+      ctx.stroke();
+      ctx.closePath();
+    }
+  };
+
+  // 时分秒指针
+  var drawHand = function () {
+    // ctx.clearRect(0, 0, canvasElm.style.width, canvasElm.style.height);
+    // 获取时分秒
+    var now = new Date();
+    var sec = now.getSeconds();
+    var min = now.getMinutes();
+    var hour = now.getHours();
+    // 根据时间旋转角度
+    // 时
+    ctx.save();
+    ctx.beginPath();
+    ctx.lineWidth = 7;
+    let secondAngle = Math.PI / 180 * 6 * sec;  //计算出来s针的弧度
+    let minuteAngle = Math.PI / 180 * 6 * min + secondAngle / 60;  //计算出来分针的弧度
+    let hourAngle = Math.PI / 180 * 30 * hour + minuteAngle / 12;  //计算出来时针的弧度
+    ctx.lineCap = "round";
+    ctx.rotate(-Math.PI / 2 + hourAngle);
+    ctx.strokeStyle = "red";
+    ctx.moveTo(0, 0);
+    ctx.lineTo(120, 0);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.restore();
+    // 分
+    ctx.save()
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.rotate(-Math.PI / 2 + minuteAngle);
+    ctx.strokeStyle = "blue";
+    ctx.lineWidth = 5;
+    ctx.lineTo(150, 0);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.restore();
+    // 秒
+    ctx.save()
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.rotate(-Math.PI / 2 + secondAngle);
+    ctx.strokeStyle = "green";
+    ctx.lineWidth = 3;
+    ctx.lineTo(180, 0);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.restore();
+  };
+
+  var canvasElm = document.getElementById('tutorial');
+  if (canvasElm.getContext) {
+    var ctx = canvasElm.getContext('2d');
+    drawDial();
+    drawHand();
+  }
+  requestAnimationFrame(function step() {
+    // ctx.clearRect(0, 0, 1000, 1000);
+    ctx.clearRect(0, 0, canvasElm.width*2, canvasElm.height*2);
+    drawHand();
+    ctx.restore();
+    // drawDial()
+    requestAnimationFrame(step);
+  })
+</script>
