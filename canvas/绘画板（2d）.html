@@ -1,0 +1,55 @@
+<html>
+<div style="padding: 100px;">
+  <!-- 调色盘 -->
+  <div style="margin-bottom: 10px;">
+    <input type="color" onchange="changeColor()" id="color" />
+    <button onclick="clear()" id="button">清屏</button>
+    <input type="range" class="range" min="2" max="20" value="5" onchange="changeLine()" id="line">
+  </div>
+  <!-- 画板部分 -->
+  <canvas style="border: 4px solid #cccccc;" width="800px" height="600px" id="canvas"></canvas>
+  <div></div>
+</div>
+
+</html>
+<script>
+  var dom = document.querySelector('#canvas');
+  var colorElm = document.querySelector('#color');
+  var lineElm = document.querySelector('#line');
+  var button = document.querySelector('#button');
+  var left = dom.offsetLeft;
+  var ttop = dom.offsetTop;
+  if (dom.getContext){
+    var ctx = dom.getContext('2d');
+    ctx.strokeStyle = "black";
+  }
+
+  var mousemove = function (event) {
+    ctx.lineTo(event.clientX - left, event.clientY - ttop);
+    ctx.stroke();
+  };
+  var mousedown = function (event) {
+    dom.addEventListener('mousemove', mousemove);
+    // 开始绘制
+    ctx.beginPath();
+    // 移动绘制点
+    ctx.moveTo(event.clientX - left, event.clientY - ttop);
+  };
+  var mouseup = function (event) {
+    dom.removeEventListener('mousemove', mousemove);
+  };
+  dom.addEventListener('mousedown', mousedown);
+  dom.addEventListener('mouseup', mouseup);
+
+  function changeColor() {
+    ctx.strokeStyle = colorElm.value || 'black';
+  }
+  
+  function changeLine(){
+    ctx.lineWidth =  lineElm.value;
+  }
+  
+  button.addEventListener('click',function(){
+    ctx.clearRect(0, 0, dom.width, dom.height);
+  })
+</script>
