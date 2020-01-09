@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html manifest="catch.appcache">
+<!-- 
+  直接修改缓存文件，客户端不会拉取修改的文件，只有修改了manifest文件后才能重新获取全部缓存文件
+  并且在修改过manifest文件后，客户端第一次访问页面需要再刷新页面才能拿到修改后的文件，因为manifest加载晚于其他资源。
+-->
+<body>
+  3
+  <div>
+    <img src="./img.jpg" />
+  </div>
+  <div>
+    <img src="./paint.jpg" />
+  </div>
+</body>
+<script>
+  // 更新下缓存
+  applicationCache.addEventListener('updateready', function () {
+    applicationCache.swapCache();
+    location.reload();
+  }, true);
+</script>
+
+</html>
