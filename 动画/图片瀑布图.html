@@ -1,0 +1,78 @@
+<html>
+
+<head>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="content">
+
+  </div>
+</body>
+<script>
+
+  var res = [];
+  var col = 7;  // 一行7个
+  var rootEle = document.querySelector('.content');
+  // 生成随机图片
+  function createImgs() {
+    const array = [
+      'http://placekitten.com/100/80',
+      'http://placekitten.com/100/60',
+      'http://placekitten.com/100/50',
+      'http://placekitten.com/100/200',
+      'http://placekitten.com/100/150',
+      'http://placekitten.com/100/100',
+      'http://placekitten.com/100/250'
+    ];
+    for (let i = 0; i < 21; i++) {
+      res.push(array[Math.floor(Math.random() * 7)]);
+    }
+    if (Array.isArray(res)) {
+      res.forEach((src) => {
+        var ele = document.createElement('div');
+        ele.style['position'] = 'absolute';
+        ele.style['display'] = 'inline-block';
+        var imgEle = document.createElement('img');
+        imgEle.style.margin = '5px';
+        imgEle.src = src;
+        ele.appendChild(imgEle);
+        rootEle.appendChild(ele);
+      });
+    }
+    // imgWidth = $('img').outerWidth(true);
+  }
+
+  // 瀑布流算法
+  function waterFall() {
+    const colArray = (new Array(7)).fill(0);
+    const items = document.querySelector('img');
+    // 核心方法就是每次图片加载出来后，对于之前保存的图片数组取出，每次取最小高度的索引，在索引位置添加图片
+    document.querySelectorAll('img').forEach(img => {
+      img.onload = function () {
+        let minIndex = 0;
+        let minValue = colArray[0];
+        for (let i = 0; i < col; i++) {
+          if (minValue > colArray[i]) {
+            minValue = colArray[i];
+            minIndex = i;
+          }
+        }
+        this.parentElement.style.left = `${minIndex * 110}px`;
+        this.parentElement.style.top = `${minValue}px`;
+        colArray[minIndex] += $(this).outerHeight(true)
+      };
+    });
+  }
+  createImgs();
+  waterFall();
+</script>
+<style>
+  .content {
+    width: 710px;
+    position: ab;
+    margin: 0 auto;
+  }
+</style>
+
+</html>
